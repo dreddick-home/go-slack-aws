@@ -24,12 +24,12 @@ jobs:
     - name: Binary
       run: GOOS=linux go build -o main
     - name: Zip
-      run: zip function-${GITHUB_SHA}.zip main
+      run: zip function.zip main
     - name: Upload deploy package
       uses: actions/upload-artifact@v2
       with:
         name: function
-        path: function-${GITHUB_SHA}.zip
+        path: function.zip
 #  publish:
 #    needs: [test]
 #    name: Publish docker image
