@@ -1,0 +1,47 @@
+on: [push, pull_request]
+name: CICD
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.14.x
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Test
+      run: go test -v ./...
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.14.x
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Binary
+      run: GOOS=linux go build -o main
+    - name: Zip
+      run: zip function-${GITHUB_SHA}.zip main
+    - name: Upload deploy package
+      uses: actions/upload-artifact@v2
+      with:
+        name: function
+        path: function-${GITHUB_SHA}.zip
+#  publish:
+#    needs: [test]
+#    name: Publish docker image
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Push to Docker Hub
+#      uses: docker/build-push-action@v1
+#      if: startsWith(github.ref, 'refs/tags/v') 
+#      with:
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+#        repository: dreddick/go-slack-icebreaker
+#        tag_with_ref: true
+#        tag_with_sha: true
