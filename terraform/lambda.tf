@@ -25,7 +25,7 @@ resource "aws_lambda_function" "test_lambda" {
   handler       = "main"
 
 
-  runtime = "go1.x"
+  runtime          = "go1.x"
   source_code_hash = filebase64sha256("../function.zip")
 
   environment {
