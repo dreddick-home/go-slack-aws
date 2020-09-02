@@ -32,6 +32,7 @@ jobs:
         path: function.zip
   terraform:
     name: 'Terraform'
+    needs: [build]
     runs-on: ubuntu-latest
     env:
       TF_IN_AUTOMATION: true
